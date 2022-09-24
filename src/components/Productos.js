@@ -9,9 +9,9 @@ function Productos(props) {
         dismissible
         onClose={() => props.eliminar(producto)}
       >
-        Producto: {producto.producto}
+        <strong>Producto:</strong> {producto.producto}
         <br></br>
-        Precio: {producto.precio}
+        <strong>Precio:</strong> {producto.precio}
       </Alert>
     );
   });

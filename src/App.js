@@ -2,17 +2,24 @@ import "./App.css";
 import { Form, Button } from "react-bootstrap";
 import { useState } from "react";
 import Producto from "./components/Productos";
+import Alerta from "./components/Alerta";
 
 function App() {
   const [producto, setProducto] = useState("");
   const [precio, setPrecio] = useState(0);
   const [productos, setProductos] = useState([]);
   const [costoTotal, setCostoTotal] = useState(0.0);
+  const [estadoAlerta, setEstadoAlerta] = useState(false);
 
   const agregar = (e) => {
     e.preventDefault();
-    setProductos([...productos, { producto: producto, precio: precio }]);
-    setCostoTotal(costoTotal + precio);
+    if (producto && precio) {
+      setProductos([...productos, { producto: producto, precio: precio }]);
+      setCostoTotal(costoTotal + precio);
+      setEstadoAlerta(false);
+    } else {
+      setEstadoAlerta(true);
+    }
   };
 
   const eliminar = (product) => {
@@ -51,6 +58,11 @@ function App() {
           </Button>
         </div>
       </Form>
+      <Alerta
+        estado={estadoAlerta}
+        variante={"danger"}
+        mensaje={"Los campos no estan completos!"}
+      ></Alerta>
       <h5>Costo Total: {costoTotal}</h5>
       <Producto productos={productos} eliminar={eliminar}></Producto>
     </div>
