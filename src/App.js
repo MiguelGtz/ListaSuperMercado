@@ -22,11 +22,9 @@ function App() {
     }
   };
 
-  const eliminar = (product) => {
-    setProductos(
-      productos.filter((producto) => producto.producto !== product.producto)
-    );
-    setCostoTotal(costoTotal - product.precio);
+  const eliminar = (precio, indice) => {
+    setProductos(productos.filter((_, index) => index !== indice));
+    setCostoTotal(costoTotal - precio);
   };
 
   return (

@@ -2,12 +2,12 @@ import React from "react";
 import { Alert } from "react-bootstrap";
 
 function Productos(props) {
-  const listaProductos = props.productos.map((producto) => {
+  const listaProductos = props.productos.map((producto, index) => {
     return (
       <Alert
-        key={producto.producto}
+        key={index}
         dismissible
-        onClose={() => props.eliminar(producto)}
+        onClose={() => props.eliminar(producto.precio, index)}
       >
         <strong>Producto:</strong> {producto.producto}
         <br></br>
