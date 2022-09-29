@@ -1,8 +1,9 @@
 import "./App.css";
 import { Form, Button } from "react-bootstrap";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Producto from "./components/Productos";
 import Alerta from "./components/Alerta";
+import axios from "axios";
 
 function App() {
   const [producto, setProducto] = useState("");
@@ -11,20 +12,45 @@ function App() {
   const [costoTotal, setCostoTotal] = useState(0.0);
   const [estadoAlerta, setEstadoAlerta] = useState(false);
 
-  const agregar = (e) => {
+  const cargar = async () => {
+    const res = await axios.get("http://localhost:9000/productos");
+    setCostoTotal(
+      res.data.map((objeto) => objeto.precio).reduce((a, b) => a + b, 0)
+    );
+    setProductos(res.data);
+  };
+
+  useEffect(() => {
+    cargar();
+  }, []);
+
+  const agregar = async (e) => {
     e.preventDefault();
     if (producto && precio) {
-      setProductos([...productos, { producto: producto, precio: precio }]);
-      setCostoTotal(costoTotal + precio);
-      setEstadoAlerta(false);
+      try {
+        await axios.post("http://localhost:9000/productos", {
+          nombre: producto,
+          precio: precio,
+        });
+        setCostoTotal(costoTotal + precio);
+        setEstadoAlerta(false);
+        cargar();
+      } catch (error) {
+        console.log(error);
+      }
     } else {
       setEstadoAlerta(true);
     }
   };
 
-  const eliminar = (precio, indice) => {
-    setProductos(productos.filter((_, index) => index !== indice));
-    setCostoTotal(costoTotal - precio);
+  const eliminar = async (producto) => {
+    try {
+      await axios.delete(`http://localhost:9000/productos/${producto.id}`);
+      setCostoTotal(costoTotal - producto.precio);
+      cargar();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
