@@ -6,7 +6,7 @@ import Alerta from "./components/Alerta";
 
 function App() {
   const [producto, setProducto] = useState("");
-  const [precio, setPrecio] = useState(0);
+  const [precio, setPrecio] = useState("");
   const [productos, setProductos] = useState([]);
   const [costoTotal, setCostoTotal] = useState(0.0);
   const [estadoAlerta, setEstadoAlerta] = useState(false);
@@ -17,6 +17,8 @@ function App() {
       setProductos([...productos, { producto: producto, precio: precio }]);
       setCostoTotal(costoTotal + precio);
       setEstadoAlerta(false);
+      setProducto("");
+      setPrecio("");
     } else {
       setEstadoAlerta(true);
     }
@@ -35,6 +37,7 @@ function App() {
           <Form.Label>Producto</Form.Label>
           <Form.Control
             type="text"
+            value={producto}
             onChange={(e) => setProducto(e.target.value)}
           />
         </Form.Group>
@@ -42,6 +45,7 @@ function App() {
           <Form.Label>Precio</Form.Label>
           <Form.Control
             type="number"
+            value={precio}
             onChange={(e) => setPrecio(parseFloat(e.target.value))}
           />
         </Form.Group>
