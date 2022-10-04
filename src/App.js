@@ -13,7 +13,9 @@ function App() {
   const [estadoAlerta, setEstadoAlerta] = useState(false);
 
   const cargar = async () => {
-    const res = await axios.get("http://localhost:9000/productos");
+    const res = await axios.get(
+      "https://server-nodemysql-production.up.railway.app/productos"
+    );
     setCostoTotal(
       res.data.map((objeto) => objeto.precio).reduce((a, b) => a + b, 0)
     );
@@ -28,10 +30,13 @@ function App() {
     e.preventDefault();
     if (producto && precio) {
       try {
-        await axios.post("http://localhost:9000/productos", {
-          nombre: producto,
-          precio: precio,
-        });
+        await axios.post(
+          "https://server-nodemysql-production.up.railway.app/productos",
+          {
+            nombre: producto,
+            precio: precio,
+          }
+        );
         setCostoTotal(costoTotal + precio);
         setEstadoAlerta(false);
         cargar();
@@ -45,7 +50,9 @@ function App() {
 
   const eliminar = async (producto) => {
     try {
-      await axios.delete(`http://localhost:9000/productos/${producto.id}`);
+      await axios.delete(
+        `https://server-nodemysql-production.up.railway.app/productos/${producto.id}`
+      );
       setCostoTotal(costoTotal - producto.precio);
       cargar();
     } catch (error) {
